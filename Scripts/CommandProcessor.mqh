@@ -39,9 +39,9 @@ private:
    HashMap<string,MqlCommand*>m_commands;
 public:
 
-                     TradeCommandProcessor();
+  TradeCommandProcessor();
 
-   RespValue        *process(const RespArray &command)
+  RespValue        *process(const RespArray &command)
      {
       if(command.size()==0) {return new RespError("Command is empty!");}
       string c=dynamic_cast<RespBytes*>(command[0]).getValueAsString();
@@ -60,6 +60,10 @@ TradeCommandProcessor::TradeCommandProcessor(void)
    m_commands.set("ORDERS",new OrdersCommand);
    m_commands.set("BUY",new BuyCommand);
    m_commands.set("SELL",new SellCommand);
+   m_commands.set("BUYLIMIT",new BuyLimitCommand);
+   m_commands.set("SELLLIMIT",new SellLimitCommand);
+   m_commands.set("FREEMARGIN",new FreeMarginCommand);
+   m_commands.set("EDIT",new EditCommand);
    m_commands.set("CLOSE",new CloseCommand);
    m_commands.set("QUIT",new QuitCommand);
   }
