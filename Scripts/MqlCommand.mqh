@@ -24,6 +24,7 @@
 #include <Mql/Trade/Account.mqh>
 #include <Mql/Trade/Order.mqh>
 #include <Mql/Format/Resp.mqh>
+#include <stdlib.mqh>
 //+------------------------------------------------------------------+
 //| Wraps a specific MQL command                                     |
 //+------------------------------------------------------------------+
@@ -176,11 +177,11 @@ public:
    {
       if(command.size() != 6) return new RespError("Invalid number of arguments for command SELLLIMIT!");
 
-      string symbol = dynamic_cast<RespBytes*>(command[1])->getValueAsString();
-      double lots = StringToDouble(dynamic_cast<RespBytes*>(command[2])->getValueAsString());
-      double price = StringToDouble(dynamic_cast<RespBytes*>(command[3])->getValueAsString());
-      double sl = StringToDouble(dynamic_cast<RespBytes*>(command[4])->getValueAsString());
-      double tp = StringToDouble(dynamic_cast<RespBytes*>(command[5])->getValueAsString());
+      string symbol = dynamic_cast<RespBytes*>(command[1]).getValueAsString();
+      double lots = StringToDouble(dynamic_cast<RespBytes*>(command[2]).getValueAsString());
+      double price = StringToDouble(dynamic_cast<RespBytes*>(command[3]).getValueAsString());
+      double sl = StringToDouble(dynamic_cast<RespBytes*>(command[4]).getValueAsString());
+      double tp = StringToDouble(dynamic_cast<RespBytes*>(command[5]).getValueAsString());
 
       int id = OrderSend(symbol, OP_SELLLIMIT, lots, price, 0, sl, tp, NULL, 0, 0, clrNONE);
       if(id == -1)
@@ -211,11 +212,11 @@ public:
    {
       if(command.size() != 6) return new RespError("Invalid number of arguments for command BUYLIMIT!");
 
-      string symbol = dynamic_cast<RespBytes*>(command[1])->getValueAsString();
-      double lots = StringToDouble(dynamic_cast<RespBytes*>(command[2])->getValueAsString());
-      double price = StringToDouble(dynamic_cast<RespBytes*>(command[3])->getValueAsString());
-      double sl = StringToDouble(dynamic_cast<RespBytes*>(command[4])->getValueAsString());
-      double tp = StringToDouble(dynamic_cast<RespBytes*>(command[5])->getValueAsString());
+      string symbol = dynamic_cast<RespBytes*>(command[1]).getValueAsString();
+      double lots = StringToDouble(dynamic_cast<RespBytes*>(command[2]).getValueAsString());
+      double price = StringToDouble(dynamic_cast<RespBytes*>(command[3]).getValueAsString());
+      double sl = StringToDouble(dynamic_cast<RespBytes*>(command[4]).getValueAsString());
+      double tp = StringToDouble(dynamic_cast<RespBytes*>(command[5]).getValueAsString());
 
       int id = OrderSend(symbol, OP_BUYLIMIT, lots, price, 0, sl, tp, NULL, 0, 0, clrNONE);
       if(id == -1)
@@ -245,9 +246,9 @@ public:
    {
       if(command.size() != 4) return new RespError("Invalid number of arguments for command EDIT!");
 
-      int ticket = (int)StringToInteger(dynamic_cast<RespBytes*>(command[1])->getValueAsString());
-      double sl = StringToDouble(dynamic_cast<RespBytes*>(command[2])->getValueAsString());
-      double tp = StringToDouble(dynamic_cast<RespBytes*>(command[3])->getValueAsString());
+      int ticket = (int)StringToInteger(dynamic_cast<RespBytes*>(command[1]).getValueAsString());
+      double sl = StringToDouble(dynamic_cast<RespBytes*>(command[2]).getValueAsString());
+      double tp = StringToDouble(dynamic_cast<RespBytes*>(command[3]).getValueAsString());
 
       // First, select the order by ticket
       if(!OrderSelect(ticket, SELECT_BY_TICKET))
@@ -285,7 +286,7 @@ public:
       if(command.size() != 1) return new RespError("Invalid number of arguments for command FREEMARGIN!");
 
       double freeMargin = AccountFreeMargin();
-      return new RespDouble(freeMargin);
+      return new RespString(IntegerToString(MathRound(freeMargin), 0, ""));
    }
 };
 
