@@ -77,6 +77,7 @@ class BuyCommand: public MqlCommand
 public:
    RespValue        *call(const RespArray &command)
      {
+      Print(Symbol());
       if(command.size()!=3) return new RespError("Invalid number of arguments for command BUY!");
       string symbol=dynamic_cast<RespBytes*>(command[1]).getValueAsString();
       double lots=StringToDouble(dynamic_cast<RespBytes*>(command[2]).getValueAsString());
@@ -165,7 +166,7 @@ public:
 
 //+------------------------------------------------------------------+
 //| Place a sell limit order with SL and TP                          |
-//| Syntax: SELLLIMIT Symbol Lots Price SL TP                        |
+//| Syntax: SELLLIMIT Symbol Lots Price SL TP Comment                |
 //| Results:                                                         |
 //|   Success: Order id (RespInteger)                                |
 //|   Fail:    RespError                                             |
@@ -175,15 +176,16 @@ class SellLimitCommand: public MqlCommand
 public:
    RespValue *call(const RespArray &command)
    {
-      if(command.size() != 6) return new RespError("Invalid number of arguments for command SELLLIMIT!");
+      if(command.size() != 7) return new RespError("Invalid number of arguments for command SELLLIMIT!");
 
       string symbol = dynamic_cast<RespBytes*>(command[1]).getValueAsString();
       double lots = StringToDouble(dynamic_cast<RespBytes*>(command[2]).getValueAsString());
       double price = StringToDouble(dynamic_cast<RespBytes*>(command[3]).getValueAsString());
       double sl = StringToDouble(dynamic_cast<RespBytes*>(command[4]).getValueAsString());
       double tp = StringToDouble(dynamic_cast<RespBytes*>(command[5]).getValueAsString());
+      string comment = dynamic_cast<RespBytes*>(command[6]).getValueAsString();
 
-      int id = OrderSend(symbol, OP_SELLLIMIT, lots, price, 0, sl, tp, NULL, 0, 0, clrNONE);
+      int id = OrderSend(symbol, OP_SELLLIMIT, lots, price, 0, sl, tp, comment, 0, 0, clrNONE);
       if(id == -1)
       {
          int ec = Mql::getLastError();
@@ -200,7 +202,7 @@ public:
 
 //+------------------------------------------------------------------+
 //| Place a buy limit order with SL and TP                           |
-//| Syntax: BUYLIMIT Symbol Lots Price SL TP                         |
+//| Syntax: BUYLIMIT Symbol Lots Price SL TP Comment                 |
 //| Results:                                                         |
 //|   Success: Order id (RespInteger)                                |
 //|   Fail:    RespError                                             |
@@ -210,15 +212,16 @@ class BuyLimitCommand: public MqlCommand
 public:
    RespValue *call(const RespArray &command)
    {
-      if(command.size() != 6) return new RespError("Invalid number of arguments for command BUYLIMIT!");
+      if(command.size() != 7) return new RespError("Invalid number of arguments for command BUYLIMIT!");
 
       string symbol = dynamic_cast<RespBytes*>(command[1]).getValueAsString();
       double lots = StringToDouble(dynamic_cast<RespBytes*>(command[2]).getValueAsString());
       double price = StringToDouble(dynamic_cast<RespBytes*>(command[3]).getValueAsString());
       double sl = StringToDouble(dynamic_cast<RespBytes*>(command[4]).getValueAsString());
       double tp = StringToDouble(dynamic_cast<RespBytes*>(command[5]).getValueAsString());
+      string comment = dynamic_cast<RespBytes*>(command[6]).getValueAsString();
 
-      int id = OrderSend(symbol, OP_BUYLIMIT, lots, price, 0, sl, tp, NULL, 0, 0, clrNONE);
+      int id = OrderSend(symbol, OP_BUYLIMIT, lots, price, 0, sl, tp, comment, 0, 0, clrNONE);
       if(id == -1)
       {
          int ec = Mql::getLastError();
