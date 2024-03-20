@@ -65,6 +65,7 @@ TradeCommandProcessor::TradeCommandProcessor(void)
    m_commands.set("FREEMARGIN",new FreeMarginCommand);
    m_commands.set("EDIT",new EditCommand);
    m_commands.set("CLOSE",new CloseCommand);
+   m_commands.set("DELETE",new DeleteCommand);
    m_commands.set("QUIT",new QuitCommand);
   }
 //+------------------------------------------------------------------+

@@ -172,6 +172,48 @@ public:
 };
 
 //+------------------------------------------------------------------+
+//| Delete a market order                                            |
+//| Syntax: DELETE Ticket                                            |
+//| Results:                                                         |
+//|   Success: "Ok" (RespString)                                     |
+//|   Fail:    RespError                                             |
+//+------------------------------------------------------------------+
+class DeleteCommand : public MqlCommand
+{
+public:
+  RespValue *call(const RespArray &command)
+  {
+    // Check if the number of arguments is correct
+    if (command.size() != 2)
+      return new RespError("Invalid number of arguments for command DELETE!");
+
+    // Convert the ticket number from the command arguments
+    int ticket = (int)StringToInteger(dynamic_cast<RespBytes *>(command[1]).getValueAsString());
+
+    // Select the order by ticket number to check if it exists
+    if (!Order::Select(ticket))
+    {
+      return new RespError("Order does not exist!");
+    }
+
+    // Attempt to delete the selected order
+    if (!OrderDelete(ticket))
+    {
+      // If deletion fails, get and return the last error
+      int ec = Mql::getLastError();
+      return new RespError(StringFormat("Failed to delete market order #%d with error id (%d): %s",
+                                        ticket, ec, Mql::getErrorMessage(ec)));
+    }
+    else
+    {
+      // Return success message
+      return new RespString("Ok");
+    }
+  }
+};
+
+
+//+------------------------------------------------------------------+
 //| Place a sell limit order with SL and TP                          |
 //| Syntax: SELLLIMIT Symbol Lots Price SL TP MagicNumber            |
 //| Results:                                                         |
