@@ -84,8 +84,8 @@ public:
       return new RespError("Invalid number of arguments for command BUY!");
     string symbol = dynamic_cast<RespBytes *>(command[1]).getValueAsString();
     double lots = StringToDouble(dynamic_cast<RespBytes *>(command[2]).getValueAsString());
-    int magicNumber = StringToInt(dynamic_cast<RespBytes *>(command[3]).getValueAsString());
-    int id = OrderSend(symbol, OP_BUY, lots, FxSymbol::getAsk(symbol), 3, 0, 0, NULL, magicNumber, 0, clrNONE);
+    int magicNumber = StringToInteger(dynamic_cast<RespBytes *>(command[3]).getValueAsString());
+    int id = OrderSend(symbol, OP_BUY, lots, FxSymbol::getAsk(symbol), 3, 0, 0, "_", magicNumber, 0, clrNONE);
     if (id == -1)
     {
       int ec = Mql::getLastError();
@@ -115,7 +115,7 @@ public:
     string symbol = dynamic_cast<RespBytes *>(command[1]).getValueAsString();
     double lots = StringToDouble(dynamic_cast<RespBytes *>(command[2]).getValueAsString());
     int magicNumber = StringToInteger(dynamic_cast<RespBytes *>(command[3]).getValueAsString());
-    int id = OrderSend(symbol, OP_SELL, lots, FxSymbol::getBid(symbol), 3, 0, 0, NULL, magicNumber, 0, clrNONE);
+    int id = OrderSend(symbol, OP_SELL, lots, FxSymbol::getBid(symbol), 3, 0, 0, "_", magicNumber, 0, clrNONE);
     if (id == -1)
     {
       int ec = Mql::getLastError();
@@ -193,7 +193,7 @@ public:
     double tp = StringToDouble(dynamic_cast<RespBytes *>(command[5]).getValueAsString());
     long magicNumber = StringToInteger(dynamic_cast<RespBytes *>(command[6]).getValueAsString());
 
-    int id = OrderSend(symbol, OP_SELLLIMIT, lots, price, 0, sl, tp, NULL, magicNumber, 0, clrNONE);
+    int id = OrderSend(symbol, OP_SELLLIMIT, lots, price, 0, sl, tp, "_", magicNumber, 0, clrNONE);
     if (id == -1)
     {
       int ec = Mql::getLastError();
@@ -229,7 +229,7 @@ public:
     double tp = StringToDouble(dynamic_cast<RespBytes *>(command[5]).getValueAsString());
     long magicNumber = StringToInteger(dynamic_cast<RespBytes *>(command[6]).getValueAsString());
 
-    int id = OrderSend(symbol, OP_BUYLIMIT, lots, price, 0, sl, tp, NULL, magicNumber, 0, clrNONE);
+    int id = OrderSend(symbol, OP_BUYLIMIT, lots, price, 0, sl, tp, "_", magicNumber, 0, clrNONE);
     if (id == -1)
     {
       int ec = Mql::getLastError();
